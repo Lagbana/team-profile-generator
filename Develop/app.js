@@ -52,7 +52,7 @@ const newEmployeeQuestions = [
     {
         type: 'list',
         name: 'role',
-        message: 'What is your role?',
+        message: "What is your employee's role in the company?",
         choices: ['engineer', 'manager', 'intern']
     }
 ]
@@ -67,12 +67,12 @@ const employeeResponses = async () => {
     }
 }
 
-// Extra Information
+// Role Specific Questionnaire
 let engineerDetail = [
     {
         type: 'input',
         name: 'github',
-        message: 'What is your GitHub username?',
+        message: "What is the engineer's GitHub username?",
         validate: function (text) {
             if (text.length < 1) {
                 return 'Please enter a valid GitHub username';
@@ -86,10 +86,10 @@ let internDetail = [
     {
         type: 'input',
         name: 'school',
-        message: 'What is the name of your current school?',
+        message: "What school does the intern currently attend?",
         validate: function (text) {
             if (text.length < 1) {
-                return 'Please enter your current school name';
+                return 'Please enter a valid school name';
             }
             return true;
         },
@@ -100,7 +100,7 @@ let managerDetail = [
     {
         type: 'number',
         name: 'officeNumber',
-        message: 'What is your office number?',
+        message: "What is the manager's office number",
         validate: function (value) {
             var valid = !isNaN(parseInt(value));
             return valid || 'Please enter a valid office number';
@@ -109,7 +109,7 @@ let managerDetail = [
     }
 ]
 
-// Role Detail Questionaire function
+// Role Detail Questionnaire function
 const roleDetail = async () => {
     const { employeeName, id, email, role } = await employeeResponses()
     try {
