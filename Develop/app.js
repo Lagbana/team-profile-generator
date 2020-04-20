@@ -5,7 +5,8 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
-const fs = require("fs");
+const fs = require("fs").promises;
+const writeFileP = fs.writeFile
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
@@ -53,7 +54,7 @@ const newEmployeeQuestions = [
         type: 'list',
         name: 'role',
         message: "What is your employee's role in the company?",
-        choices: ['engineer', 'manager', 'intern']
+        choices: ['manager', 'engineer', 'intern']
     }
 ]
 
@@ -156,7 +157,7 @@ const createTeamManager = async () => {
         !!! Warning: You need to create a manager first.
         `)
         const response = await roleDetail()
-        const {employeeName, id, email, role, detail} = response
+        const { employeeName, id, email, role, detail } = response
         managerName = employeeName
         managerID = id
         managerEmail = email
@@ -181,7 +182,7 @@ const teamBuilder = async () => {
                     New Manager Creation
                     *********************
         `)
-    const manager = await createTeamManager() 
+    const manager = await createTeamManager()
     result.push(manager)
 
     const response = await numberOfNewEmployees()
@@ -212,15 +213,27 @@ const teamBuilder = async () => {
             return
         }
     }
-    console.log(result)
-    // console.log(result[0].name)
+    return result
 }
-teamBuilder()
-
-
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
+const renderTeam = async () => {
+    const team = await teamBuilder()
+    const html = render(team)
+    return html
+}
+
+const init = async () => {
+    try {
+        const html = await renderTeam()
+        await writeFileP(outputPath, html)
+        console.log('Successfully wrote to index.html')
+    } catch (err) {
+        console.error(err)
+    }
+}
+init()
 
 // After you have your html, you're now ready to create an HTML file using the HTML
 // returned from the `render` function. Now write it to a file named `team.html` in the
@@ -228,12 +241,6 @@ teamBuilder()
 // Hint: you may need to check if the `output` folder exists and create it if it
 // does not.
 
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+
+
