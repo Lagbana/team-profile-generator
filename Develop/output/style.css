@@ -1,0 +1,29 @@
+.header{
+    background-color: #0E88F2;
+    color: #ffffff;
+}
+
+h1 {
+    margin-left: 3rem;
+}
+
+.employee-card {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    /* margin-top: 1rem; */
+    margin-bottom: 2rem;
+    padding: 0rem;
+}
+
+.card-header {
+    background-color: rgb(78, 179, 226);
+    color: #ffffff;
+}
+
+.card-body {
+    background-color: #F2F2F2;
+}
+
+.team-heading {
+    background-color: #ffffff;
+}
