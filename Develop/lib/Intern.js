@@ -1,5 +1,5 @@
+// Import dependencies
 const Employee = require('./Employee')
-
 
 class Intern extends Employee {
     constructor (name, id, email, school) {
@@ -13,5 +13,4 @@ class Intern extends Employee {
         return "Intern";
     }
 }
-
 module.exports = Intern;
