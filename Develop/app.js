@@ -1,5 +1,6 @@
 'use strict'
 
+// Import Dependencies
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -8,9 +9,11 @@ const path = require("path");
 const fs = require("fs").promises;
 const writeFileP = fs.writeFile
 
+// Output file and folder
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "QA-team.html");
 
+// Render final html 
 const render = require("./lib/htmlRenderer");
 
 // Inquirer questions
@@ -129,6 +132,7 @@ const roleDetail = async () => {
     }
 }
 
+// Determine number of non-managerial team members
 const numberOfNewEmployees = async () => {
     let numberOfEmployees = [
         {
@@ -146,6 +150,7 @@ const numberOfNewEmployees = async () => {
     return number
 }
 
+// Create sole team manager
 const createTeamManager = async () => {
     let isManager, managerName, managerID, managerEmail, managerDetail
 
@@ -212,7 +217,6 @@ const teamBuilder = async () => {
     }
     return result
 }
-
 
 const renderTeam = async () => {
     const team = await teamBuilder()
