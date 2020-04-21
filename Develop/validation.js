@@ -24,7 +24,7 @@ const idValidation = value => {
 }
 const officeValidation = value => {
     var valid = (Number.isInteger(value) && (value !== 0));
-    return valid || 'Please enter a valid office number';
+    return valid || 'Please press the up arrow button and enter a valid office number';
 }
 const emailValidation = value => {
     const regex = /^[a-zA-Z0-9_\.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9\.]{2,5}$/i
