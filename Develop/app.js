@@ -7,6 +7,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs").promises;
+const validate= require('./validation')
 const writeFileP = fs.writeFile
 
 // Output file and folder
@@ -16,38 +17,27 @@ const outputPath = path.join(OUTPUT_DIR, "QA-team.html");
 // Render final html 
 const render = require("./lib/htmlRenderer");
 
-// Inquirer questions
+// Inquirer - new employee questions with tested validations
 const newEmployeeQuestions = [
     {
         type: 'input',
         name: 'employeeName',
         message: "What is the employee's full name?",
-        validate: function (text) {
-            if (text.length < 1) {
-                return "Please enter the employee's full name";
-            }
-            return true;
-        },
+        validate: validate.nameValidation,
         filter: String
     },
     {
         type: 'input',
         name: 'id',
         message: "What is your employee's id?",
-        validate: function (value) {
-            const valid = (Number.isInteger(value) && (value !== 0))
-            return valid || 'Please press the up arrow button and enter a valid number'
-        },
+        validate: validate.idValidation,
         filter: Number
     },
     {
         type: 'input',
         name: 'email',
         message: "What is your employee's work email?",
-        validate: function (value) {
-            const regex = /^[a-zA-Z0-9_\.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9\.]{2,5}$/i
-            return regex.test(value) || 'Please enter a valid email address'
-        },
+        validate: validate.emailValidation,
         filter: String
     },
     {
@@ -68,18 +58,13 @@ const employeeResponses = async () => {
     }
 }
 
-// Role Specific Questionnaire
+// Role Specific Questionnaire with validation
 let engineerDetail = [
     {
         type: 'input',
         name: 'github',
         message: "What is the engineer's GitHub username?",
-        validate: function (text) {
-            if (text.length < 1) {
-                return 'Please enter a valid GitHub username';
-            }
-            return true;
-        },
+        validate: validate.githubValidation,
         filter: String
     }
 ]
@@ -88,12 +73,7 @@ let internDetail = [
         type: 'input',
         name: 'school',
         message: "What school does the intern currently attend?",
-        validate: function (text) {
-            if (text.length < 1) {
-                return 'Please enter a valid school name';
-            }
-            return true;
-        },
+        validate: validate.schoolValidation,
         filter: String
     }
 ]
@@ -102,10 +82,7 @@ let managerDetail = [
         type: 'number',
         name: 'officeNumber',
         message: "What is the manager's office number",
-        validate: function (value) {
-            var valid = !isNaN(parseInt(value));
-            return valid || 'Please enter a valid office number';
-        },
+        validate: validate.officeValidation,
         filter: Number
     }
 ]
@@ -139,10 +116,7 @@ const numberOfNewEmployees = async () => {
             type: 'input',
             name: 'number',
             message: `How many 'Non-Managerial' employees do you need to create (has to be at least 2)?`,
-            validate: function (value) {
-                const valid = (Number.isInteger(value) && (value !== 0) && (value !== 1))
-                return valid || 'Please press the up arrow button and enter a valid number'
-            },
+            validate: validate.newEmployeesValidation,
             filter: Number
         }
     ]
@@ -156,7 +130,8 @@ const createTeamManager = async () => {
 
     while (isManager !== 'manager') {
         console.log(`
-        !!! Warning: You need to create a manager first.
+        !!! Warning: You need to create a manager first. 
+        Application will restart if the first created employee is not a manager.
         `)
         const response = await roleDetail()
         const { employeeName, id, email, role, detail } = response
@@ -167,6 +142,9 @@ const createTeamManager = async () => {
         isManager = role
     }
     const manager = new Manager(managerName, managerID, managerEmail, managerDetail)
+    console.log(`
+        Team manager successfully created!
+    `)
     return manager
 }
 
@@ -206,9 +184,15 @@ const teamBuilder = async () => {
 
         if ((role === 'engineer') && (role !== 'manager')) {
             const engineer = new Engineer(employeeName, id, email, detail)
+            console.log(`
+                New engineer successfully created!
+            `)
             result.push(engineer)
         } else if ((role === 'intern') && (role !== 'manager')) {
             const intern = new Intern(employeeName, id, email, detail)
+            console.log(`
+                New intern successfully created!
+            `)
             result.push(intern)
         } else {
             console.log("You can not have '2' managers in one team, please start again.")
@@ -218,12 +202,14 @@ const teamBuilder = async () => {
     return result
 }
 
+// Create html file using team objects
 const renderTeam = async () => {
     const team = await teamBuilder()
     const html = render(team)
     return html
 }
 
+// Initialize application
 const init = async () => {
     try {
         const html = await renderTeam()
