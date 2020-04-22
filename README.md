@@ -1,7 +1,7 @@
 
 # Team Profile Generator
 
-![GitHub issues](https://img.shields.io/github/issues-raw/Lagbana/employee-profile-generator) ![Contributors](https://img.shields.io/github/contributors/Lagbana/employee-profile-generator) ![Code-size](https://img.shields.io/github/languages/code-size/Lagbana/employee-profile-generator) ![Last Commit](https://img.shields.io/github/last-commit/Lagbana/employee-profile-generator) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub issues](https://img.shields.io/github/issues-raw/Lagbana/team-profile-generator) ![Contributors](https://img.shields.io/github/contributors/Lagbana/team-profile-generator) ![Code-size](https://img.shields.io/github/languages/code-size/Lagbana/team-profile-generator) ![Last Commit](https://img.shields.io/github/last-commit/Lagbana/team-profile-generator) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Description
 Team profile generator is a Node CLI that takes in information about employees and when the user has completed building the team, the application will create an HTML file that displays a formatted team roster based on the information provided by the user.
